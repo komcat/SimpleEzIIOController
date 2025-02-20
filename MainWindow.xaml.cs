@@ -112,6 +112,51 @@ namespace SimpleEzIIOController
             }
         }
 
+        // Example usage:
+        async Task TestPneumaticSlide()
+        {
+            // Load configuration
+            var config = new PneumaticSlideConfig
+            {
+                Name = "UV_Head",
+                Output = new OutputConfig
+                {
+                    DeviceName = "IOBottom",
+                    PinName = "UV_Head"
+                },
+                ExtendedInput = new InputConfig
+                {
+                    DeviceName = "IOTop",
+                    PinName = "UV_Head_Up"
+                },
+                RetractedInput = new InputConfig
+                {
+                    DeviceName = "IOTop",
+                    PinName = "UV_Head_Down"
+                }
+            };
+
+            using (var slide = new PneumaticSlide(config))
+            {
+                // Subscribe to events
+                slide.PositionChanged += (s, pos) => Console.WriteLine($"Position changed to: {pos}");
+                slide.Error += (s, err) => Console.WriteLine($"Error: {err}");
+
+                // Extend the slide
+                bool success = await slide.ExtendAsync();
+                if (success)
+                    Console.WriteLine("Slide extended successfully");
+
+                // Wait a bit
+                await Task.Delay(1000);
+
+                // Retract the slide
+                success = await slide.RetractAsync();
+                if (success)
+                    Console.WriteLine("Slide retracted successfully");
+            }
+        }
+
         private void OutputPin_Click(object sender, RoutedEventArgs e)
         {
             if (!ezIIOManager.IsConnected) return;
@@ -168,6 +213,8 @@ namespace SimpleEzIIOController
             }
             base.OnClosing(e);
         }
+
+
     }
 
    
