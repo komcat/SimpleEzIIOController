@@ -1,0 +1,170 @@
+﻿<Window x:Class="SimpleEzIIOController.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SimpleEzIIOController"
+        Title="EzIIO Controller" Height="700" Width="1200">
+    <Window.Resources>
+        <SolidColorBrush x:Key="TrueBrush" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="FalseBrush" Color="#F44336"/>
+        <local:BooleanToBrushConverter x:Key="BoolToColorConverter"/>
+
+        <Style x:Key="PinListStyle" TargetType="ListView">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="AlternationCount" Value="2"/>
+        </Style>
+
+        <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="5,10"/>
+        </Style>
+
+        <Style x:Key="DeviceInfoTextStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,0"/>
+        </Style>
+
+        <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="#F5F5F5"/>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Connection Controls -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Device:" Style="{StaticResource DeviceInfoTextStyle}"/>
+            <ComboBox x:Name="deviceCombo" Grid.Column="1" Margin="5,0,10,0" 
+                      SelectionChanged="DeviceCombo_SelectionChanged">
+                <ComboBoxItem Content="IOBottom"/>
+                <ComboBoxItem Content="IOTop"/>
+            </ComboBox>
+
+            <TextBlock Text="IP Address:" Grid.Column="2" Style="{StaticResource DeviceInfoTextStyle}"/>
+            <TextBlock x:Name="ipTextBlock" Grid.Column="3" Style="{StaticResource DeviceInfoTextStyle}"/>
+
+            <Button x:Name="connectButton" Content="Connect" Width="100" Grid.Column="4"
+                    Margin="10,0" Padding="10,5" Click="ConnectButton_Click"/>
+
+            <TextBlock x:Name="statusTextBlock" Text="Disconnected" Grid.Column="5"
+                     Style="{StaticResource DeviceInfoTextStyle}" Foreground="Red"/>
+        </Grid>
+
+        <!-- Pin Lists Header -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Input Pins" Style="{StaticResource HeaderTextStyle}"/>
+            <TextBlock Text="Output Pins" Grid.Column="1" Style="{StaticResource HeaderTextStyle}"/>
+        </Grid>
+
+        <!-- Pin Lists -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Input Pins -->
+            <ListView x:Name="inputPinsListView" Style="{StaticResource PinListStyle}"
+                      ItemContainerStyle="{StaticResource ListViewItemStyle}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Pin" Width="50">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding PinNumber}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Name" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="State" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Ellipse Width="20" Height="20" 
+                                            Fill="{Binding State, Converter={StaticResource BoolToColorConverter}}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Output Pins -->
+            <ListView x:Name="outputPinsListView" Grid.Column="1" Style="{StaticResource PinListStyle}"
+                      ItemContainerStyle="{StaticResource ListViewItemStyle}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Pin" Width="50">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding PinNumber}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Name" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="State" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Width="60" Height="25" Click="OutputPin_Click"
+                                            Tag="{Binding Name}">
+                                        <Ellipse Width="20" Height="20" 
+                                                Fill="{Binding State, Converter={StaticResource BoolToColorConverter}}"/>
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+        <!-- Status Bar -->
+        <StatusBar Grid.Row="3">
+            <StatusBarItem>
+                <TextBlock x:Name="statusBarText" Text="Ready"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
