@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Data;
+using System.Linq;
 using EzIIOLib;
 
 namespace SimpleEzIIOController
@@ -30,15 +31,34 @@ namespace SimpleEzIIOController
             {
                 MessageBox.Show($"Error initializing device: {ex.Message}", "Initialization Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+                statusBarText.Text = $"Error: {ex.Message}";
             }
         }
 
         private void CreateEzIIOManager(string deviceName)
         {
-            ezIIOManager?.Dispose();
-            ezIIOManager = new EzIIOManager(deviceName);
-            SetupEventHandlers();
-            SetupDataContext();
+            try
+            {
+                // Cleanup existing manager if any
+                if (ezIIOManager != null)
+                {
+                    ezIIOManager.ConnectionStatusChanged -= OnConnectionStatusChanged;
+                    ezIIOManager.Error -= OnError;
+                    ezIIOManager.InputStateChanged -= OnInputStateChanged;
+                    ezIIOManager.OutputStateChanged -= OnOutputStateChanged;
+                    ezIIOManager.Dispose();
+                }
+
+                // Create new manager using factory method
+                ezIIOManager = EzIIOManager.CreateFromConfig(deviceName);
+
+                SetupEventHandlers();
+                SetupDataContext();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to create EzIIOManager: {ex.Message}", ex);
+            }
         }
 
         private void SetupEventHandlers()
@@ -141,9 +161,14 @@ namespace SimpleEzIIOController
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            ezIIOManager?.Dispose();
+            if (ezIIOManager != null)
+            {
+                ezIIOManager.Dispose();
+                ezIIOManager = null;
+            }
             base.OnClosing(e);
         }
     }
 
+   
 }

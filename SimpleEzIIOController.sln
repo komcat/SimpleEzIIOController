@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35806.99 d17.13
+VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleEzIIOController", "SimpleEzIIOController.csproj", "{9AE45E63-D9D4-4149-9AD7-2E8BCAA4399C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzIIOLib", "..\EzIIOLib\EzIIOLib.csproj", "{75061D3F-7EC3-528B-660B-91A311A73664}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9AE45E63-D9D4-4149-9AD7-2E8BCAA4399C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AE45E63-D9D4-4149-9AD7-2E8BCAA4399C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AE45E63-D9D4-4149-9AD7-2E8BCAA4399C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75061D3F-7EC3-528B-660B-91A311A73664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75061D3F-7EC3-528B-660B-91A311A73664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75061D3F-7EC3-528B-660B-91A311A73664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75061D3F-7EC3-528B-660B-91A311A73664}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
