@@ -17,6 +17,33 @@ namespace SimpleEzIIOController
             InitializeComponent();
             deviceCombo.SelectedIndex = 0;
             UpdateDeviceInfo();
+             // Create and show TestIOPage after initializing the main window
+    Application.Current.Dispatcher.BeginInvoke(new Action(() => 
+    {
+        try 
+        {
+            var testWindow = new TestIOPage();
+            // Make sure window initializes before accessing dependency properties
+            testWindow.Loaded += (s, e) => 
+            {
+                var window = s as TestIOPage;
+                if (window != null)
+                {
+                    window.Width = 1000;
+                    window.Height = 700;
+                    window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                }
+            };
+            testWindow.Show();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error creating TestIOPage: {ex.Message}\n\nStack Trace: {ex.StackTrace}",
+                "Window Creation Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+    }));
         }
 
         private void UpdateDeviceInfo()
@@ -109,51 +136,6 @@ namespace SimpleEzIIOController
                 connectButton.Content = "Connect";
                 deviceCombo.IsEnabled = true;
                 statusBarText.Text = "Disconnected";
-            }
-        }
-
-        // Example usage:
-        async Task TestPneumaticSlide()
-        {
-            // Load configuration
-            var config = new PneumaticSlideConfig
-            {
-                Name = "UV_Head",
-                Output = new OutputConfig
-                {
-                    DeviceName = "IOBottom",
-                    PinName = "UV_Head"
-                },
-                ExtendedInput = new InputConfig
-                {
-                    DeviceName = "IOTop",
-                    PinName = "UV_Head_Up"
-                },
-                RetractedInput = new InputConfig
-                {
-                    DeviceName = "IOTop",
-                    PinName = "UV_Head_Down"
-                }
-            };
-
-            using (var slide = new PneumaticSlide(config))
-            {
-                // Subscribe to events
-                slide.PositionChanged += (s, pos) => Console.WriteLine($"Position changed to: {pos}");
-                slide.Error += (s, err) => Console.WriteLine($"Error: {err}");
-
-                // Extend the slide
-                bool success = await slide.ExtendAsync();
-                if (success)
-                    Console.WriteLine("Slide extended successfully");
-
-                // Wait a bit
-                await Task.Delay(1000);
-
-                // Retract the slide
-                success = await slide.RetractAsync();
-                if (success)
-                    Console.WriteLine("Slide retracted successfully");
             }
         }
 

@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EzIIOLibControl\EzIIOLibControl.csproj" />
     <ProjectReference Include="..\EzIIOLib\EzIIOLib.csproj" />
   </ItemGroup>
 

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleEzIIOController", "Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzIIOLib", "..\EzIIOLib\EzIIOLib.csproj", "{75061D3F-7EC3-528B-660B-91A311A73664}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzIIOLibControl", "..\EzIIOLibControl\EzIIOLibControl.csproj", "{7A80ADCB-4139-4F62-B51B-69B29932D34C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{75061D3F-7EC3-528B-660B-91A311A73664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75061D3F-7EC3-528B-660B-91A311A73664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75061D3F-7EC3-528B-660B-91A311A73664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A80ADCB-4139-4F62-B51B-69B29932D34C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A80ADCB-4139-4F62-B51B-69B29932D34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A80ADCB-4139-4F62-B51B-69B29932D34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A80ADCB-4139-4F62-B51B-69B29932D34C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,41 @@
+﻿<Window x:Class="SimpleEzIIOController.TestIOPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleEzIIOController"
+        xmlns:controls="clr-namespace:EzIIOLibControl.Controls;assembly=EzIIOLibControl"
+        mc:Ignorable="d"
+        Title="IO Pin Monitor Test" Height="600" Width="800">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Input Pins Monitor -->
+        <controls:IOPinMonitorControl 
+            x:Name="inputPinMonitor"
+            Grid.Row="0"
+            HeaderText="Input Pins"
+            IsOutput="False"
+            Margin="5"/>
+
+        <!-- Output Pins Monitor -->
+        <controls:IOPinMonitorControl 
+            x:Name="outputPinMonitor"
+            Grid.Row="1"
+            HeaderText="Output Pins"
+            IsOutput="True"
+            Margin="5"/>
+
+        <!-- Status Bar -->
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock x:Name="statusBarText" Text="Initializing..."/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
